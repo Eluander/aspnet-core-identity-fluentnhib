@@ -2,8 +2,9 @@
 Esse é um projetinho inicial que resolvi fazer para ajudar a implementar o identity para autenticação e autorização de usuários.
 
 # Detalhes:
-* ASPNET CORE 3.1
 * DDD
-* Simple Migration
+* ASPNET CORE 3.1
+* Identity
 * Fluent NHibernate
+* Simple Migration
 * PostgreSQL
