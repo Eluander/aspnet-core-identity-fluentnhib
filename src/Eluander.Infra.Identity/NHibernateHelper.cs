@@ -11,7 +11,7 @@ namespace Eluander.Infra.Identity
         private static NHibernate.Cfg.Configuration Config()
         {
             var config = Fluently.Configure()
-                            .Database(PostgreSQLConfiguration.PostgreSQL82.ConnectionString("User ID=postgres;Password=123;Host=127.0.0.1;Port=5432;Database=NHibernate;"))
+                            .Database(PostgreSQLConfiguration.PostgreSQL82.ConnectionString("User ID=postgres;Host=127.0.0.1;Port=5432;Database=fluentnhib;Password=123;"))
                             .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
                             .ExposeConfiguration(ExecuteMigration)
                             .BuildConfiguration();
