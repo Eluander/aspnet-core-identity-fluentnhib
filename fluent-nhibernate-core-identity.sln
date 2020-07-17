@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Presentation", "1. Presentation", "{F0EF43BA-4128-4C77-860E-0676D5ABDEE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Domain", "2. Domain", "{90C9A36E-3BB8-474B-AF87-45B57C79CDE8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Infra", "3. Infra", "{B27C60A9-35F4-460D-A551-427A49D1BA1E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Shared", "4. Shared", "{B4DF3617-A081-41F4-A6C1-86D2D02CF060}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluander.Domain.Identity", "src\Eluander.Domain.Identity\Eluander.Domain.Identity.csproj", "{B0C28E50-F172-4E01-B64E-3753CD6B9744}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluander.Infra.Identity", "src\Eluander.Infra.Identity\Eluander.Infra.Identity.csproj", "{F2517397-7F13-456C-9DCF-484563284BB9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluander.Infra.IoC", "src\Eluander.Infra.IoC\Eluander.Infra.IoC.csproj", "{70EA14B8-24D0-4B99-8108-7AE298C3BA10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eluander.Infra.Identity.Migrations", "src\Eluander.Infra.Identity.Migration\Eluander.Infra.Identity.Migrations\Eluander.Infra.Identity.Migrations.csproj", "{785BA5D8-80ED-4298-826B-EBB18D8C29FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0C28E50-F172-4E01-B64E-3753CD6B9744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0C28E50-F172-4E01-B64E-3753CD6B9744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0C28E50-F172-4E01-B64E-3753CD6B9744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0C28E50-F172-4E01-B64E-3753CD6B9744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2517397-7F13-456C-9DCF-484563284BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2517397-7F13-456C-9DCF-484563284BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2517397-7F13-456C-9DCF-484563284BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2517397-7F13-456C-9DCF-484563284BB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70EA14B8-24D0-4B99-8108-7AE298C3BA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70EA14B8-24D0-4B99-8108-7AE298C3BA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70EA14B8-24D0-4B99-8108-7AE298C3BA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70EA14B8-24D0-4B99-8108-7AE298C3BA10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{785BA5D8-80ED-4298-826B-EBB18D8C29FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{785BA5D8-80ED-4298-826B-EBB18D8C29FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{785BA5D8-80ED-4298-826B-EBB18D8C29FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{785BA5D8-80ED-4298-826B-EBB18D8C29FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B0C28E50-F172-4E01-B64E-3753CD6B9744} = {90C9A36E-3BB8-474B-AF87-45B57C79CDE8}
+		{F2517397-7F13-456C-9DCF-484563284BB9} = {B27C60A9-35F4-460D-A551-427A49D1BA1E}
+		{70EA14B8-24D0-4B99-8108-7AE298C3BA10} = {B27C60A9-35F4-460D-A551-427A49D1BA1E}
+		{785BA5D8-80ED-4298-826B-EBB18D8C29FD} = {B27C60A9-35F4-460D-A551-427A49D1BA1E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5181DCE8-CDCB-4492-9137-A65E86D68B4B}
+	EndGlobalSection
+EndGlobal
