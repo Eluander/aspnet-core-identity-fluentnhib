@@ -4,5 +4,6 @@ Esse é um projetinho inicial que resolvi fazer para ajudar a implementar o iden
 # Detalhes:
 * ASPNET CORE 3.1
 * DDD
+* Simple Migration
 * Fluent NHibernate
 * PostgreSQL
