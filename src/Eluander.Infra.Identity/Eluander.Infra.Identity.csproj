@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Eluander.Domain.Identity\Eluander.Domain.Identity.csproj" />
+    <ProjectReference Include="..\Eluander.Shared.Core\Eluander.Shared.Core.csproj" />
   </ItemGroup>
 
 </Project>

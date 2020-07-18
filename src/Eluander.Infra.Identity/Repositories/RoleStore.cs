@@ -1,4 +1,5 @@
 ﻿using Eluander.Domain.Identity.Entities;
+using Eluander.Shared.Core;
 using Microsoft.AspNetCore.Identity;
 using NHibernate;
 using NHibernate.Linq;
@@ -6,25 +7,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using IdentityRole = Eluander.Domain.Identity.Entities.IdentityRole;
 
-namespace Eluander.Infra.Identity.Extensions
+namespace Eluander.Infra.Identity.Repositories
 {
-    public class RoleStore<TRole>
-        : RoleStoreBase<TRole, string, IdentityUserRole, IdentityRoleClaim> where TRole : IdentityRole
+    public class RoleStore<TRole> : RoleStoreBase<TRole, string, IdentityUserRole, IdentityRoleClaim> 
+        where TRole : IdentityRole
     {
-
-        private readonly ISession session;
+        #region Repositories and constructors
+        private readonly IUow _uow;
+        private ISession _session;
 
         public RoleStore(
-            ISession session,
-            IdentityErrorDescriber describer = null
-        ) : base(describer)
+            IUow uow,
+            IdentityErrorDescriber errorDescriber = null
+            ) : base(errorDescriber ?? new IdentityErrorDescriber())
         {
-            this.session = session ?? throw new ArgumentNullException(nameof(session));
+            _uow = uow;
+            _session = uow.GetSession() ?? throw new ArgumentNullException(nameof(_session));
         }
+        #endregion
 
         public override async Task<IdentityResult> CreateAsync(
             TRole role,
@@ -37,7 +42,7 @@ namespace Eluander.Infra.Identity.Extensions
             {
                 throw new ArgumentNullException(nameof(role));
             }
-            await session.SaveAsync(role, cancellationToken);
+            await _session.SaveAsync(role, cancellationToken);
             await FlushChangesAsync(cancellationToken);
             return IdentityResult.Success;
         }
@@ -68,7 +73,7 @@ namespace Eluander.Infra.Identity.Extensions
                 );
             }
             role.ConcurrencyStamp = Guid.NewGuid().ToString("N");
-            await session.MergeAsync(role, cancellationToken);
+            await _session.MergeAsync(role, cancellationToken);
             await FlushChangesAsync(cancellationToken);
             return IdentityResult.Success;
         }
@@ -84,7 +89,7 @@ namespace Eluander.Infra.Identity.Extensions
             {
                 throw new ArgumentNullException(nameof(role));
             }
-            await session.DeleteAsync(role, cancellationToken);
+            await _session.DeleteAsync(role, cancellationToken);
             await FlushChangesAsync(cancellationToken);
             return IdentityResult.Success;
         }
@@ -125,7 +130,7 @@ namespace Eluander.Infra.Identity.Extensions
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             var id = roleId;
-            var role = await session.GetAsync<TRole>(id, cancellationToken);
+            var role = await _session.GetAsync<TRole>(id, cancellationToken);
             return role;
         }
 
@@ -144,9 +149,9 @@ namespace Eluander.Infra.Identity.Extensions
             return role;
         }
 
-        public override IQueryable<TRole> Roles => session.Query<TRole>();
+        public override IQueryable<TRole> Roles => _session.Query<TRole>();
 
-        private IQueryable<IdentityRoleClaim> RoleClaims => session.Query<IdentityRoleClaim>();
+        private IQueryable<IdentityRoleClaim> RoleClaims => _session.Query<IdentityRoleClaim>();
 
         public override async Task<IList<Claim>> GetClaimsAsync(
             TRole role,
@@ -184,7 +189,7 @@ namespace Eluander.Infra.Identity.Extensions
                 throw new ArgumentNullException(nameof(claim));
             }
             var roleClaim = CreateRoleClaim(role, claim);
-            await session.SaveAsync(roleClaim, cancellationToken);
+            await _session.SaveAsync(roleClaim, cancellationToken);
             await FlushChangesAsync(cancellationToken);
         }
 
@@ -212,7 +217,7 @@ namespace Eluander.Infra.Identity.Extensions
                 .ToListAsync(cancellationToken);
             foreach (var c in claims)
             {
-                await session.DeleteAsync(c, cancellationToken);
+                await _session.DeleteAsync(c, cancellationToken);
             }
             await FlushChangesAsync(cancellationToken);
         }
@@ -221,8 +226,8 @@ namespace Eluander.Infra.Identity.Extensions
             CancellationToken cancellationToken = default
         )
         {
-            await session.FlushAsync(cancellationToken);
-            session.Clear();
+            await _session.FlushAsync(cancellationToken);
+            _session.Clear();
         }
 
     }

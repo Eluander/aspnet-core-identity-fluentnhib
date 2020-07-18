@@ -1,4 +1,5 @@
 ﻿using Eluander.Domain.Identity.Entities;
+using Eluander.Shared.Core;
 using Microsoft.AspNetCore.Identity;
 using NHibernate;
 using NHibernate.Linq;
@@ -11,34 +12,36 @@ using System.Threading.Tasks;
 using IdentityRole = Eluander.Domain.Identity.Entities.IdentityRole;
 using IdentityUser = Eluander.Domain.Identity.Entities.IdentityUser;
 
-namespace Eluander.Infra.Identity.Extensions
+namespace Eluander.Infra.Identity.Repositories
 {
-    public class UserStore<TUser, TRole> :
-        UserStoreBase<TUser, TRole, string, IdentityUserClaim, IdentityUserRole, IdentityUserLogin, IdentityUserToken, IdentityRoleClaim>,
+    public class UserStore<TUser, TRole> : UserStoreBase<TUser, TRole, string, IdentityUserClaim, IdentityUserRole, IdentityUserLogin, IdentityUserToken, IdentityRoleClaim>,
         IProtectedUserStore<TUser> where TUser : IdentityUser where TRole : IdentityRole
     {
-
-        private readonly ISession session;
+        #region Repositories and constructors
+        private readonly IUow _uow;
+        private ISession _session;
 
         public UserStore(
-            ISession session,
+            IUow uow,
             IdentityErrorDescriber errorDescriber = null
-        ) : base(errorDescriber ?? new IdentityErrorDescriber())
+            ) : base(errorDescriber ?? new IdentityErrorDescriber())
         {
-            this.session = session ?? throw new ArgumentNullException(nameof(session));
+            _uow = uow;
+            _session = uow.GetSession() ?? throw new ArgumentNullException(nameof(_session));
         }
+        #endregion
 
-        public override IQueryable<TUser> Users => session.Query<TUser>();
+        public override IQueryable<TUser> Users => _session.Query<TUser>();
 
-        private IQueryable<TRole> Roles => session.Query<TRole>();
+        private IQueryable<TRole> Roles => _session.Query<TRole>();
 
-        private IQueryable<IdentityUserClaim> UserClaims => session.Query<IdentityUserClaim>();
+        private IQueryable<IdentityUserClaim> UserClaims => _session.Query<IdentityUserClaim>();
 
-        private IQueryable<IdentityUserRole> UserRoles => session.Query<IdentityUserRole>();
+        private IQueryable<IdentityUserRole> UserRoles => _session.Query<IdentityUserRole>();
 
-        private IQueryable<IdentityUserLogin> UserLogins => session.Query<IdentityUserLogin>();
+        private IQueryable<IdentityUserLogin> UserLogins => _session.Query<IdentityUserLogin>();
 
-        private IQueryable<IdentityUserToken> UserTokens => session.Query<IdentityUserToken>();
+        private IQueryable<IdentityUserToken> UserTokens => _session.Query<IdentityUserToken>();
 
         public override async Task<IdentityResult> CreateAsync(
             TUser user,
@@ -51,7 +54,7 @@ namespace Eluander.Infra.Identity.Extensions
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            await session.SaveAsync(user, cancellationToken);
+            await _session.SaveAsync(user, cancellationToken);
             await FlushChangesAsync(cancellationToken);
             return IdentityResult.Success;
         }
@@ -82,7 +85,7 @@ namespace Eluander.Infra.Identity.Extensions
                 );
             }
             user.ConcurrencyStamp = Guid.NewGuid().ToString("N");
-            await session.MergeAsync(user, cancellationToken);
+            await _session.MergeAsync(user, cancellationToken);
             await FlushChangesAsync(cancellationToken);
             return IdentityResult.Success;
         }
@@ -98,7 +101,7 @@ namespace Eluander.Infra.Identity.Extensions
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            await session.DeleteAsync(user, cancellationToken);
+            await _session.DeleteAsync(user, cancellationToken);
             await FlushChangesAsync(cancellationToken);
             return IdentityResult.Success;
         }
@@ -111,7 +114,7 @@ namespace Eluander.Infra.Identity.Extensions
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             var id = ConvertIdFromString(userId);
-            var user = await session.GetAsync<TUser>(id, cancellationToken);
+            var user = await _session.GetAsync<TUser>(id, cancellationToken);
             return user;
         }
 
@@ -231,7 +234,7 @@ namespace Eluander.Infra.Identity.Extensions
                     $"Role {normalizedRoleName} not found!"
                 );
             }
-            await session.SaveAsync(CreateUserRole(user, role), cancellationToken);
+            await _session.SaveAsync(CreateUserRole(user, role), cancellationToken);
             await FlushChangesAsync(cancellationToken);
         }
 
@@ -264,7 +267,7 @@ namespace Eluander.Infra.Identity.Extensions
                 );
                 if (userRole != null)
                 {
-                    await session.DeleteAsync(userRole, cancellationToken);
+                    await _session.DeleteAsync(userRole, cancellationToken);
                     await FlushChangesAsync(cancellationToken);
                 }
             }
@@ -356,7 +359,7 @@ namespace Eluander.Infra.Identity.Extensions
             }
             foreach (var claim in claims)
             {
-                await session.SaveAsync(
+                await _session.SaveAsync(
                     CreateUserClaim(user, claim),
                     cancellationToken
                 );
@@ -395,7 +398,7 @@ namespace Eluander.Infra.Identity.Extensions
             {
                 matchedClaim.ClaimType = newClaim.Type;
                 matchedClaim.ClaimValue = newClaim.Value;
-                await session.UpdateAsync(matchedClaim, cancellationToken);
+                await _session.UpdateAsync(matchedClaim, cancellationToken);
             }
             await FlushChangesAsync(cancellationToken);
         }
@@ -426,7 +429,7 @@ namespace Eluander.Infra.Identity.Extensions
                     .ToListAsync(cancellationToken);
                 foreach (var matchedClaim in matchedClaims)
                 {
-                    await session.DeleteAsync(matchedClaim, cancellationToken);
+                    await _session.DeleteAsync(matchedClaim, cancellationToken);
                 }
             }
             await FlushChangesAsync(cancellationToken);
@@ -448,7 +451,7 @@ namespace Eluander.Infra.Identity.Extensions
             {
                 throw new ArgumentNullException(nameof(login));
             }
-            await session.SaveAsync(
+            await _session.SaveAsync(
                 CreateUserLogin(user, login),
                 cancellationToken
             );
@@ -476,7 +479,7 @@ namespace Eluander.Infra.Identity.Extensions
             );
             if (login != null)
             {
-                await session.DeleteAsync(login, cancellationToken);
+                await _session.DeleteAsync(login, cancellationToken);
             }
         }
 
@@ -642,7 +645,7 @@ namespace Eluander.Infra.Identity.Extensions
             {
                 throw new ArgumentNullException(nameof(token));
             }
-            await session.SaveAsync(token);
+            await _session.SaveAsync(token);
             await FlushChangesAsync();
         }
 
@@ -655,7 +658,7 @@ namespace Eluander.Infra.Identity.Extensions
             {
                 throw new ArgumentNullException(nameof(token));
             }
-            await session.DeleteAsync(token);
+            await _session.DeleteAsync(token);
             await FlushChangesAsync();
         }
 
@@ -663,9 +666,8 @@ namespace Eluander.Infra.Identity.Extensions
             CancellationToken cancellationToken = default
         )
         {
-            await session.FlushAsync(cancellationToken);
-            session.Clear();
+            await _session.FlushAsync(cancellationToken);
+            _session.Clear();
         }
-
     }
 }
