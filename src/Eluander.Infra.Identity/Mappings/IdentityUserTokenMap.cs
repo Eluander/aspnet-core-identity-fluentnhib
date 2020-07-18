@@ -1,7 +1,7 @@
 ﻿using Eluander.Domain.Identity.Entities;
 using FluentNHibernate.Mapping;
 
-namespace Eluander.Infra.Identity.FluentNHMappings
+namespace Eluander.Infra.Identity.Mappings
 {
     public sealed class IdentityUserTokenMap : ClassMap<IdentityUserToken>
     {
