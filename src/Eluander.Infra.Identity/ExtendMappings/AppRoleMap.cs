@@ -1,7 +1,7 @@
 ﻿using Eluander.Domain.Identity.Extends;
 using FluentNHibernate.Mapping;
 
-namespace Eluander.Infra.Identity.ExtendsNHMap
+namespace Eluander.Infra.Identity.ExtendMappings
 {
     public sealed class AppRoleMap : SubclassMap<AppRole>
     {

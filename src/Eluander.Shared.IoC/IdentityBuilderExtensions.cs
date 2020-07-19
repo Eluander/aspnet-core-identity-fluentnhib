@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Eluander.Infra.Identity.Extensions
+namespace Eluander.Shared.IoC
 {
     public static class IdentityBuilderExtensions
     {
