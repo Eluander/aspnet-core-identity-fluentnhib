@@ -10,5 +10,5 @@ Esse é um projetinho inicial que resolvi fazer para ajudar a implementar o iden
 * PostgreSQL
 
 # Grupos
-Whatsapp: https://chat.whatsapp.com/BjGYAgzWezpJuS0p2t0PwW
+Whatsapp: https://chat.whatsapp.com/BjGYAgzWezpJuS0p2t0PwW .
 Telegram: https://t.me/nhibernateHelp
