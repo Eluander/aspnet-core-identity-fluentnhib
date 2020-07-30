@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluander.Shared.Core", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluander.Shared.IoC", "src\Eluander.Shared.IoC\Eluander.Shared.IoC.csproj", "{C8885164-A185-4B32-A1D6-21DDFFFF6FF4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluander.Presentation.MVC", "src\Eluander.Presentation.MVC\Eluander.Presentation.MVC.csproj", "{DED5F01B-F791-424B-9537-0E9A2C3870BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{C8885164-A185-4B32-A1D6-21DDFFFF6FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8885164-A185-4B32-A1D6-21DDFFFF6FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8885164-A185-4B32-A1D6-21DDFFFF6FF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DED5F01B-F791-424B-9537-0E9A2C3870BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DED5F01B-F791-424B-9537-0E9A2C3870BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DED5F01B-F791-424B-9537-0E9A2C3870BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DED5F01B-F791-424B-9537-0E9A2C3870BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{EAD885AC-81C4-4B01-91D1-43975CA407D1} = {BDA746CB-90CE-4961-9082-FCFEA15AF2CD}
 		{FC58F796-BDF0-4433-B73B-0F614595F8FA} = {B4DF3617-A081-41F4-A6C1-86D2D02CF060}
 		{C8885164-A185-4B32-A1D6-21DDFFFF6FF4} = {B4DF3617-A081-41F4-A6C1-86D2D02CF060}
+		{DED5F01B-F791-424B-9537-0E9A2C3870BD} = {F0EF43BA-4128-4C77-860E-0676D5ABDEE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5181DCE8-CDCB-4492-9137-A65E86D68B4B}
