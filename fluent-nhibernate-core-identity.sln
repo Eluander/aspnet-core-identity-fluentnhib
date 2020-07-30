@@ -27,11 +27,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Teste", "5. Teste", "{BD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluander.Teste.Identity.Migrations", "src\Eluander.Teste.Identity.Migrations\Eluander.Teste.Identity.Migrations.csproj", "{EAD885AC-81C4-4B01-91D1-43975CA407D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eluander.Shared.Core", "src\Eluander.Shared.Core\Eluander.Shared.Core.csproj", "{FC58F796-BDF0-4433-B73B-0F614595F8FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluander.Shared.Core", "src\Eluander.Shared.Core\Eluander.Shared.Core.csproj", "{FC58F796-BDF0-4433-B73B-0F614595F8FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eluander.Shared.IoC", "src\Eluander.Shared.IoC\Eluander.Shared.IoC.csproj", "{C8885164-A185-4B32-A1D6-21DDFFFF6FF4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eluander.Presentation.MVC", "src\Eluander.Presentation.MVC\Eluander.Presentation.MVC.csproj", "{40B10D41-E07D-475B-A0D0-84CE96118114}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluander.Shared.IoC", "src\Eluander.Shared.IoC\Eluander.Shared.IoC.csproj", "{C8885164-A185-4B32-A1D6-21DDFFFF6FF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +61,6 @@ Global
 		{C8885164-A185-4B32-A1D6-21DDFFFF6FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8885164-A185-4B32-A1D6-21DDFFFF6FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8885164-A185-4B32-A1D6-21DDFFFF6FF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40B10D41-E07D-475B-A0D0-84CE96118114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40B10D41-E07D-475B-A0D0-84CE96118114}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40B10D41-E07D-475B-A0D0-84CE96118114}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40B10D41-E07D-475B-A0D0-84CE96118114}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,7 +75,6 @@ Global
 		{EAD885AC-81C4-4B01-91D1-43975CA407D1} = {BDA746CB-90CE-4961-9082-FCFEA15AF2CD}
 		{FC58F796-BDF0-4433-B73B-0F614595F8FA} = {B4DF3617-A081-41F4-A6C1-86D2D02CF060}
 		{C8885164-A185-4B32-A1D6-21DDFFFF6FF4} = {B4DF3617-A081-41F4-A6C1-86D2D02CF060}
-		{40B10D41-E07D-475B-A0D0-84CE96118114} = {F0EF43BA-4128-4C77-860E-0676D5ABDEE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5181DCE8-CDCB-4492-9137-A65E86D68B4B}
