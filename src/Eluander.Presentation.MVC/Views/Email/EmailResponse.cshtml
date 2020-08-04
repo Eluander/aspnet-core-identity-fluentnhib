@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Envio de E-mail";
+}
+
+@if ((bool)TempData["Status"])
+{
+    <p>Seu e-mail foi enviado com sucesso!</p>
+}
+else
+{
+    <p>Falha no envio do e-mail. Tente novamente mais tarde!</p>
+}

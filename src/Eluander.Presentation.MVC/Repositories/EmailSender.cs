@@ -1,43 +1,55 @@
 ﻿using Eluander.Presentation.MVC.Models;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using Eluander.Presentation.MVC.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace Eluander.Presentation.MVC.Repositories
 {
     public class EmailSender : IEmailSender
     {
-        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
+        public EmailSender(IOptions<EmailSettings> emailSettings)
         {
-            Options = optionsAccessor.Value;
+            _emailSettings = emailSettings.Value;
         }
 
-        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
+        public EmailSettings _emailSettings { get; }
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+            Execute(email, subject, message).Wait();
+            return Task.FromResult(0);
         }
 
-        public Task Execute(string apiKey, string subject, string message, string email)
+        public async Task Execute(string email, string subject, string message)
         {
-            var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            string toEmail = string.IsNullOrEmpty(email)
+                ? _emailSettings.ToEmail
+                : email;
+
+            MailMessage mail = new MailMessage()
             {
-                From = new EmailAddress("Joe@contoso.com", Options.SendGridUser),
-                Subject = subject,
-                PlainTextContent = message,
-                HtmlContent = message
+                From = new MailAddress(_emailSettings.From, _emailSettings.FromUserName)
             };
-            msg.AddTo(email, "user");
 
-            // Disable click tracking.
-            // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
-            msg.SetClickTracking(false, false);
+            mail.To.Add(new MailAddress(toEmail));
+            mail.CC.Add(new MailAddress(_emailSettings.CcEmail));
 
-            return client.SendEmailAsync(msg);
+            mail.Subject = "Eluander.com.br - " + subject;
+            mail.Body = message;
+            mail.IsBodyHtml = true;
+            mail.Priority = MailPriority.High;
+
+            //outras opções
+            //mail.Attachments.Add(new Attachment(arquivo));
+
+            using (SmtpClient smtp = new SmtpClient(_emailSettings.PrimaryDomain, _emailSettings.PrimaryPort))
+            {
+                smtp.Credentials = new NetworkCredential(_emailSettings.From, _emailSettings.PasswordUsername);
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(mail);
+            }
         }
     }
 }
