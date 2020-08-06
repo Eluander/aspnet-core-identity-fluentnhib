@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Eluander.Presentation.MVC</name>
+    </assembly>
+    <members>
+        <member name="T:Eluander.Presentation.MVC.Areas.Api.Controllers.AuthController">
+            <summary>
+            Autenticação de usuários.
+            </summary>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Areas.Api.Controllers.AuthController.#ctor(Microsoft.AspNetCore.Identity.UserManager{Eluander.Domain.Identity.Extends.AppUser},Microsoft.AspNetCore.Identity.SignInManager{Eluander.Domain.Identity.Extends.AppUser},Eluander.Presentation.MVC.Repositories.Interfaces.ITokenService,Microsoft.Extensions.Logging.ILogger{Eluander.Presentation.MVC.Areas.Api.Controllers.AuthController})">
+            <summary>
+            
+            </summary>
+            <param name="userManager"></param>
+            <param name="signInManager"></param>
+            <param name="tokenService"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Areas.Api.Controllers.AuthController.Authentication(Eluander.Domain.Identity.Commands.LoginRequest)">
+            <summary>
+            Faça o login para obter o token.
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Eluander.Presentation.MVC.Extensions.DependencyInjectionExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Extensions.DependencyInjectionExtensions.AddDependencyInjection(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="T:Eluander.Presentation.MVC.Startup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Eluander.Presentation.MVC.Startup.Configuration">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

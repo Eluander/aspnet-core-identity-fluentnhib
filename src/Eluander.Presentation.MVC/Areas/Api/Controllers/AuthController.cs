@@ -1,7 +1,5 @@
 ﻿using Eluander.Domain.Identity.Commands;
 using Eluander.Domain.Identity.Extends;
-using Eluander.Presentation.MVC.Areas.Identity.Pages.Account;
-using Eluander.Presentation.MVC.Repositories;
 using Eluander.Presentation.MVC.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Eluander.Presentation.MVC.Areas.Api.Controllers
 {
+    /// <summary>
+    /// Autenticação de usuários.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -21,6 +22,13 @@ namespace Eluander.Presentation.MVC.Areas.Api.Controllers
         private readonly ITokenService _tokenService;
         private readonly ILogger<AuthController> _logger;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="tokenService"></param>
+        /// <param name="logger"></param>
         public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, ILogger<AuthController> logger)
         {
             _userManager = userManager;
@@ -31,6 +39,11 @@ namespace Eluander.Presentation.MVC.Areas.Api.Controllers
 
         #endregion
 
+        /// <summary>
+        /// Faça o login para obter o token.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Authentication([FromBody] LoginRequest model)

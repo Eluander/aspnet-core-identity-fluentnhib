@@ -8,6 +8,10 @@
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>G:\Eluander\Dev\magios-pay-core\src\Eluander.Presentation.MVC\Eluander.Presentation.MVC.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="ScaffoldingReadMe.txt" />
   </ItemGroup>
@@ -27,6 +31,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="SendGrid" Version="9.19.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.5.1" />
   </ItemGroup>
 
   <ItemGroup>

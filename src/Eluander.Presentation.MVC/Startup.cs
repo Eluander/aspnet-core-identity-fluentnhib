@@ -1,6 +1,5 @@
 using Eluander.Domain.Identity.Extends;
 using Eluander.Presentation.MVC.Extensions;
-using Eluander.Presentation.MVC.Models;
 using Eluander.Presentation.MVC.Models.AppSettingsModels;
 using Eluander.Presentation.MVC.Repositories;
 using Eluander.Presentation.MVC.Repositories.Interfaces;
@@ -15,20 +14,35 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
 
 namespace Eluander.Presentation.MVC
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             #region Cookies config.
@@ -128,10 +142,50 @@ namespace Eluander.Presentation.MVC
             });
             #endregion
 
+            services.AddSwaggerGen(opt =>
+            {
+                var path = AppContext.BaseDirectory;
+                var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+                var file = System.IO.Path.GetFileName($"{assemblyName}.xml");
+
+                opt.IncludeXmlComments(System.IO.Path.Combine(path, file));
+                opt.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Eluander API",
+                    Version = "v1",
+                    Description = "O Swagger fornecerá uma documentação das suas API's.",
+                    Contact = new OpenApiContact
+                    {
+                        Email = "eluander@gmail.com",
+                        Name = "Eluander",
+                        Url = new Uri("https://eluander.com.br")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://exemple.com/license")
+                    }
+                });
+                opt.AddSecurityDefinition(
+                    "Bearer",
+                    new OpenApiSecurityScheme
+                    {
+                        Description = "Cabeçalho de autorização JWT usando o esquema Bearer. Ex.: \"Autorization: Bearer {token}\"",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey
+                    });
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -159,6 +213,15 @@ namespace Eluander.Presentation.MVC
             // Identity Config.
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(opt =>
+            {
+                opt.RoutePrefix = "doc";
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Eluander [API] - v1");
+                opt.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+            });
 
             // TempData Config.
             app.UseSession();
