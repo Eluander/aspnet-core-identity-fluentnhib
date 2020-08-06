@@ -46,12 +46,11 @@ namespace Eluander.Presentation.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             #region Cookies config.
-            services.Configure<CookiePolicyOptions>(
-               options =>
-               {
-                   options.CheckConsentNeeded = context => true;
-                   options.MinimumSameSitePolicy = SameSiteMode.None;
-               });
+            services.Configure<CookiePolicyOptions>(opt =>
+            {
+                opt.CheckConsentNeeded = context => true;
+                opt.MinimumSameSitePolicy = SameSiteMode.None;
+            });
             #endregion
 
             services.AddCors();
@@ -71,14 +70,25 @@ namespace Eluander.Presentation.MVC
             #region Auth Config.
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
+                // password settings.
                 opt.Password.RequireDigit = false;
                 opt.Password.RequiredLength = 6;
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
 
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
+                // lockout settings.
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                opt.Lockout.MaxFailedAccessAttempts = 5;
+                opt.Lockout.AllowedForNewUsers = true;
+
+                // user settings.
+                opt.User.RequireUniqueEmail = true;
+                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvxywzABCDEFGHIJKLMNOPQRSTUVXYWZ-._@+";
+
+                // signs settings.
                 opt.SignIn.RequireConfirmedAccount = false;
+                opt.SignIn.RequireConfirmedPhoneNumber = false;
             })
                 .AddDefaultTokenProviders()
                 .AddHibernateStores();
@@ -89,21 +99,26 @@ namespace Eluander.Presentation.MVC
 
             services.AddAuthentication(opt =>
             {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                //opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                //opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(opt =>
-                {
-                    opt.RequireHttpsMetadata = false;
-                    opt.SaveToken = true;
-                    opt.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                })
+                //.AddCookie(opt =>
+                //{
+                //    opt.LoginPath = "/Account/Unnauthorized/";
+                //    opt.AccessDeniedPath = "/Account/Forbidden/";
+                //})
+                //.AddJwtBearer(opt =>
+                //{
+                //    opt.RequireHttpsMetadata = false;
+                //    opt.SaveToken = true;
+                //    opt.TokenValidationParameters = new TokenValidationParameters
+                //    {
+                //        ValidateIssuerSigningKey = true,
+                //        IssuerSigningKey = new SymmetricSecurityKey(key),
+                //        ValidateIssuer = false,
+                //        ValidateAudience = false
+                //    };
+                //})
                 .AddGoogle("google", opt =>
                 {
                     var googleAuth = Configuration.GetSection("Authentication:Google");

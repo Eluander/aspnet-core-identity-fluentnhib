@@ -1,5 +1,6 @@
 ﻿using Eluander.Presentation.MVC.Models;
 using Eluander.Presentation.MVC.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Eluander.Presentation.MVC.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    [Authorize]
     public class EmailController : Controller
     {
         #region Repositorios e Construtores

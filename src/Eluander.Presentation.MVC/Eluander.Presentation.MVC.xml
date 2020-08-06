@@ -25,6 +25,61 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="T:Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel.#ctor(Microsoft.AspNetCore.Identity.SignInManager{Eluander.Domain.Identity.Extends.AppUser},Microsoft.Extensions.Logging.ILogger{Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel},Microsoft.AspNetCore.Identity.UserManager{Eluander.Domain.Identity.Extends.AppUser})">
+            <summary>
+            
+            </summary>
+            <param name="signInManager"></param>
+            <param name="logger"></param>
+            <param name="userManager"></param>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel.OnGetAsync(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel.OnPostAsync(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Eluander.Presentation.MVC.Controllers.EmailController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Eluander.Presentation.MVC.Controllers.HomeController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Controllers.HomeController.#ctor(Microsoft.Extensions.Logging.ILogger{Eluander.Presentation.MVC.Controllers.HomeController})">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Controllers.HomeController.Index">
+            <summary>
+            Página inicial do sistema.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Controllers.HomeController.Error">
+            <summary>
+            Página de erro.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Eluander.Presentation.MVC.Extensions.DependencyInjectionExtensions">
             <summary>
             
