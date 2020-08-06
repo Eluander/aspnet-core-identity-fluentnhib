@@ -1,9 +1,11 @@
 using Eluander.Domain.Identity.Extends;
 using Eluander.Presentation.MVC.Extensions;
 using Eluander.Presentation.MVC.Models;
+using Eluander.Presentation.MVC.Models.AppSettingsModels;
 using Eluander.Presentation.MVC.Repositories;
 using Eluander.Presentation.MVC.Repositories.Interfaces;
 using Eluander.Shared.IoC;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 
 namespace Eluander.Presentation.MVC
 {
@@ -29,22 +33,28 @@ namespace Eluander.Presentation.MVC
         {
             #region Cookies config.
             services.Configure<CookiePolicyOptions>(
-               options => {
+               options =>
+               {
                    options.CheckConsentNeeded = context => true;
                    options.MinimumSameSitePolicy = SameSiteMode.None;
                });
             #endregion
 
+            services.AddCors();
+
             #region Referencies and repositories
             // NHibernate.
             services.AddDependencyInjection();
+
+            // token
+            services.AddSingleton<ITokenService, TokenService>();
 
             // System.
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailSender, EmailSender>();
             #endregion
 
-            #region Identity Config.
+            #region Auth Config.
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
                 opt.Password.RequireDigit = false;
@@ -59,7 +69,27 @@ namespace Eluander.Presentation.MVC
                 .AddDefaultTokenProviders()
                 .AddHibernateStores();
 
-            services.AddAuthentication()
+            // JWT Bearer Security.
+            var jwtBearerSecret = Configuration.GetSection("Authentication:JwtBearer");
+            var key = Encoding.ASCII.GetBytes(jwtBearerSecret["Secret"]);
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(opt =>
+                {
+                    opt.RequireHttpsMetadata = false;
+                    opt.SaveToken = true;
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                })
                 .AddGoogle("google", opt =>
                 {
                     var googleAuth = Configuration.GetSection("Authentication:Google");
@@ -71,13 +101,15 @@ namespace Eluander.Presentation.MVC
             #endregion
 
             #region Routing config.
-            services.AddRouting(opts => {
+            services.AddRouting(opts =>
+            {
                 opts.LowercaseUrls = true;
             });
             #endregion
 
             #region API Config.
-            services.Configure<ApiBehaviorOptions>(options => {
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
                 options.SuppressConsumesConstraintForFormFileParameters = true;
                 options.SuppressInferBindingSourcesForParameters = true;
                 options.SuppressModelStateInvalidFilter = true;
@@ -118,6 +150,11 @@ namespace Eluander.Presentation.MVC
 
             // Routing config.
             app.UseRouting();
+
+            app.UseCors(opt => opt
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             // Identity Config.
             app.UseAuthentication();

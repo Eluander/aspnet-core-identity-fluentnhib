@@ -1,4 +1,4 @@
-﻿using Eluander.Presentation.MVC.Models;
+﻿using Eluander.Presentation.MVC.Models.AppSettingsModels;
 using Eluander.Presentation.MVC.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Net;

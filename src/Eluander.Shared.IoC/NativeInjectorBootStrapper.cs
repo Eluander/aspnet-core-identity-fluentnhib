@@ -10,7 +10,7 @@ namespace Eluander.Shared.IoC
         {
             //Connection and transaction
             services.AddSingleton(NHibernateHelper.SessionFactory());
-            services.AddScoped<IUow, Uow>();
+            services.AddScoped<IUow, Uow>();             
         }
     }
 }
