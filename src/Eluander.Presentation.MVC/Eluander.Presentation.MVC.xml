@@ -23,6 +23,9 @@
             Faça o login para obter o token.
             </summary>
             <param name="model"></param>
+            <response code="200">Sucesso.</response>
+            <response code="401">Usuário bloqueado.</response>
+            <response code="404">Usuário ou senha inválido.</response>
             <returns></returns>
         </member>
         <member name="T:Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel">
@@ -30,13 +33,14 @@
             
             </summary>
         </member>
-        <member name="M:Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel.#ctor(Microsoft.AspNetCore.Identity.SignInManager{Eluander.Domain.Identity.Extends.AppUser},Microsoft.Extensions.Logging.ILogger{Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel},Microsoft.AspNetCore.Identity.UserManager{Eluander.Domain.Identity.Extends.AppUser})">
+        <member name="M:Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel.#ctor(Microsoft.AspNetCore.Identity.SignInManager{Eluander.Domain.Identity.Extends.AppUser},Microsoft.Extensions.Logging.ILogger{Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel},Microsoft.AspNetCore.Identity.UserManager{Eluander.Domain.Identity.Extends.AppUser},Eluander.Presentation.MVC.Repositories.Interfaces.ITokenService)">
             <summary>
             
             </summary>
             <param name="signInManager"></param>
             <param name="logger"></param>
             <param name="userManager"></param>
+            <param name="tokenService"></param>
         </member>
         <member name="M:Eluander.Presentation.MVC.Areas.Identity.Pages.Account.LoginModel.OnGetAsync(System.String)">
             <summary>
@@ -90,6 +94,34 @@
             
             </summary>
             <param name="services"></param>
+        </member>
+        <member name="T:Eluander.Presentation.MVC.Repositories.Interfaces.ITokenService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Repositories.Interfaces.ITokenService.GenerateToken(System.Security.Claims.ClaimsIdentity,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Gerador de token.
+            </summary>
+            <param name="claimsIdentity"></param>
+            <param name="criation"></param>
+            <param name="expiration"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Eluander.Presentation.MVC.Repositories.TokenService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eluander.Presentation.MVC.Repositories.TokenService.GenerateToken(System.Security.Claims.ClaimsIdentity,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Gerador de token.
+            </summary>
+            <param name="claimsIdentity"></param>
+            <param name="criation"></param>
+            <param name="expiration"></param>
+            <returns></returns>
         </member>
         <member name="T:Eluander.Presentation.MVC.Startup">
             <summary>

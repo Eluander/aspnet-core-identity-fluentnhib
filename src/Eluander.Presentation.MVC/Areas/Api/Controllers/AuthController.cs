@@ -4,7 +4,10 @@ using Eluander.Presentation.MVC.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace Eluander.Presentation.MVC.Areas.Api.Controllers
@@ -43,41 +46,72 @@ namespace Eluander.Presentation.MVC.Areas.Api.Controllers
         /// Faça o login para obter o token.
         /// </summary>
         /// <param name="model"></param>
+        /// <response code="200">Sucesso.</response>
+        /// <response code="401">Usuário bloqueado.</response>
+        /// <response code="404">Usuário ou senha inválido.</response>
         /// <returns></returns>
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Authentication([FromBody] LoginRequest model)
         {
-            var response = await _signInManager.PasswordSignInAsync(model.Usuario, model.Senha, false, false);
-            AppUser user = null;
-            if (response.Succeeded)
-            {
-                _logger.LogInformation("Usuário conectado.");
-                user = await _userManager.FindByNameAsync(model.Usuario);
-                user.PasswordHash = null;
-            }
-            if (response.IsLockedOut)
-            {
-                _logger.LogWarning("Conta de usuário bloqueada.");
-                return Unauthorized(new { message = "Este usuário esta bloqueado." });
-            }
-            //if (response.RequiresTwoFactor)
-            //{
-            //    return NotFound(new { message = "Atenção, autenticação 2 fatores." });
-            //}
+            var token = "";
+            var userIdentity = await _userManager.FindByNameAsync(model.Usuario);
 
-            if (user == null)
-                return NotFound(new { message = "Usuário ou senha inválido." });
+            if (userIdentity != null)
+            {
+                // Efetuar login com base no ID do usuário e senha.
+                var response = await _signInManager.CheckPasswordSignInAsync(userIdentity, model.Senha, true);
 
-            // gerar token
-            var token = _tokenService.GenerateToken(user);
+                if (response.Succeeded)
+                {
+                    _logger.LogInformation("Usuário conectado.");
+
+                    // Limpar senha do usuário.
+                    userIdentity.PasswordHash = null;
+
+                }
+                else if (response.IsLockedOut)
+                {
+                    _logger.LogWarning("Conta de usuário bloqueada.");
+                    return Unauthorized(new
+                    {
+                        isAuthenticated = false,
+                        message = "Este usuário esta bloqueado."
+                    });
+                }
+
+            }
+            else
+            {
+                return NotFound(new
+                {
+                    isAuthenticated = false,
+                    message = "Usuário ou senha incorreto."
+                });
+            }
+
+            // Obter token.
+            ClaimsIdentity identity = new ClaimsIdentity(
+                new GenericIdentity(userIdentity.UserName, "Login"),
+                new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, userIdentity.UserName)
+                });
+
+            var dtCriation = DateTime.UtcNow;
+            token = _tokenService.GenerateToken(identity, dtCriation, dtCriation.AddMinutes(2));
 
             return Ok(new
             {
+                isAuthenticated = true,
                 token,
-                user,
-                expiration = DateTime.UtcNow.AddHours(2)
+                user = userIdentity,
+                created = dtCriation,
+                expiration = dtCriation.AddMinutes(2),
+                message = "OK"
             });
+
         }
     }
 }

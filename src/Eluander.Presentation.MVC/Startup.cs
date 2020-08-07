@@ -99,26 +99,26 @@ namespace Eluander.Presentation.MVC
 
             services.AddAuthentication(opt =>
             {
-                //opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                //opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                //.AddCookie(opt =>
-                //{
-                //    opt.LoginPath = "/Account/Unnauthorized/";
-                //    opt.AccessDeniedPath = "/Account/Forbidden/";
-                //})
-                //.AddJwtBearer(opt =>
-                //{
-                //    opt.RequireHttpsMetadata = false;
-                //    opt.SaveToken = true;
-                //    opt.TokenValidationParameters = new TokenValidationParameters
-                //    {
-                //        ValidateIssuerSigningKey = true,
-                //        IssuerSigningKey = new SymmetricSecurityKey(key),
-                //        ValidateIssuer = false,
-                //        ValidateAudience = false
-                //    };
-                //})
+                .AddCookie(opt =>
+                {
+                    opt.LoginPath = "/Account/Unnauthorized/";
+                    opt.AccessDeniedPath = "/Account/Forbidden/";
+                })
+                .AddJwtBearer(opt =>
+                {
+                    opt.RequireHttpsMetadata = false;
+                    opt.SaveToken = true;
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                })
                 .AddGoogle("google", opt =>
                 {
                     var googleAuth = Configuration.GetSection("Authentication:Google");
@@ -194,6 +194,14 @@ namespace Eluander.Presentation.MVC
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            #region MVC Config.
+            services.AddMvc()
+                .AddJsonOptions(opt =>
+                {
+                    opt.JsonSerializerOptions.IgnoreNullValues = true;
+                });
+            #endregion
         }
 
         /// <summary>

@@ -9,6 +9,9 @@ using System.Text;
 
 namespace Eluander.Presentation.MVC.Repositories
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class TokenService : ITokenService
     {
         #region Repositories and Constructors
@@ -19,7 +22,14 @@ namespace Eluander.Presentation.MVC.Repositories
         }
         #endregion
 
-        public string GenerateToken(AppUser appUser)
+        /// <summary>
+        /// Gerador de token.
+        /// </summary>
+        /// <param name="claimsIdentity"></param>
+        /// <param name="criation"></param>
+        /// <param name="expiration"></param>
+        /// <returns></returns>
+        public string GenerateToken(ClaimsIdentity claimsIdentity, DateTime? criation, DateTime? expiration)
         {
             var jwtBearerSecret = Configuration.GetSection("Authentication:JwtBearer");
 
@@ -27,12 +37,10 @@ namespace Eluander.Presentation.MVC.Repositories
             var key = Encoding.ASCII.GetBytes(jwtBearerSecret["Secret"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, appUser.Email),
-                    //new Claim(ClaimTypes.Role, appUser.Role.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Issuer = "https://eluander.com.br",
+                Subject = claimsIdentity,
+                NotBefore = criation ?? DateTime.UtcNow,
+                Expires = expiration ?? DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

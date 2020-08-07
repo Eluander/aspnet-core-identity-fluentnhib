@@ -12,9 +12,6 @@ namespace Eluander.Infra.Identity.ExtendMappings
 
             KeyColumn("id");
 
-            Map(x => x.DHCadastro).Column("dh_cadastro").Not.Nullable().Generated.Insert();
-            Map(x => x.DHUltimoLogin).Column("dh_ultimologin");
-            Map(x => x.LoginCount).Column("login_count").Not.Nullable();
         }
     }
 }
