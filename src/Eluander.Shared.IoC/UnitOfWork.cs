@@ -4,13 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Eluander.Shared.IoC
 {
-    public class NativeInjectorBootStrapper
+    internal class UnitOfWork
     {
-        public static void RegisterServices(IServiceCollection services)
+        public static void Register(IServiceCollection services)
         {
-            //Connection and transaction
             services.AddSingleton(NHibernateHelper.SessionFactory());
-            services.AddScoped<IUow, Uow>();             
+            services.AddScoped<IUow, Uow>();
         }
     }
 }
