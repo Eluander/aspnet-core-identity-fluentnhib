@@ -1,5 +1,5 @@
 # aspnet-core-identity-fluentnh
-Esse é um projetinho inicial que resolvi fazer para ajudar a implementar o identity para autenticação e autorização de usuários.
+Esse é um projeto base para iniciar uma aplicação MVC utilizando as tecnologias abaixo.
 
 # Incluso:
 * DDD
